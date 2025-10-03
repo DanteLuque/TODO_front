@@ -1,0 +1,22 @@
+<p-dialog [(visible)]="visible" [modal]="true" [closable]="false" header="Tarea" [style]="{width: '400px'}">
+  <div class="flex flex-col gap-3">
+    <input
+      pInputText
+      [(ngModel)]="formData.title"
+      type="text"
+      placeholder="Título"
+    />
+
+    <input
+      pInputText
+      [(ngModel)]="formData.description"
+      type="text"
+      placeholder="Descripción"
+    />
+
+    <div class="flex justify-end gap-2 mt-4">
+      <p-button label="Cancelar" severity="secondary" (onClick)="onClose()" />
+      <p-button label="Guardar" severity="success" (onClick)="onSave()" />
+    </div>
+  </div>
+</p-dialog>

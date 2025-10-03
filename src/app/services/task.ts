@@ -18,7 +18,7 @@ export class TaskService {
 
   tasks = signal<Task[]>([]);
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   getTasks() {
     this.http
@@ -38,5 +38,32 @@ export class TaskService {
       .post<Task>(this.apiUrl, task)
       .pipe(tap((newTask) => this.tasks.update((list) => [...list, newTask])))
       .subscribe();
+  }
+
+  getTaskById(id: number) {
+    return this.http.get<Task>(`${this.apiUrl}${id}/`);
+  }
+
+  updateTask(id: number, task: Task) {
+    this.http.put<Task>(`${this.apiUrl}${id}/`, task).pipe(
+      tap((updatedTask) => {
+        this.tasks.update((list) =>
+          list.map((t) => (t.id === id ? updatedTask : t))
+        );
+      })
+    ).subscribe();
+  }
+
+  toggleCompleted(task: Task) {
+    const updated = { ...task, completed: !task.completed };
+    this.updateTask(task.id!, updated);
+  }
+
+  deleteTask(id: number) {
+    this.http.delete(`${this.apiUrl}${id}/`).pipe(
+      tap(() => {
+        this.tasks.update((list) => list.filter((t) => t.id !== id));
+      })
+    ).subscribe();
   }
 }

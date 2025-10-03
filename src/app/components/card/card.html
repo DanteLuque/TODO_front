@@ -1,9 +1,25 @@
-<div class="p-4 rounded-xl shadow-md border bg-white flex flex-col gap-2">
+<div class="p-4 rounded-xl shadow-md border bg-white flex flex-col gap-2 relative">
+  <button
+    class="absolute top-2 right-2 text-red-500 hover:text-red-700"
+    (click)="onRemove()"
+  >
+    ✕
+  </button>
+
   <h3 class="font-bold text-lg text-black">{{ title }}</h3>
   <p class="text-gray-600">{{ description }}</p>
+
   <span
-    class="px-3 py-1 rounded-full text-xs font-semibold"
+    class="px-3 py-1 rounded-full text-xs font-semibold w-fit"
     [ngClass]="completed ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'">
-    {{ completed ? 'Completed' : 'Pending' }}
+    {{ completed ? 'Completado' : 'Pendiente' }}
   </span>
+
+  <div class="absolute bottom-2 right-2">
+    <p-checkbox
+      [(ngModel)]="completed"
+      [binary]="true"
+      (onChange)="onToggle()"
+    ></p-checkbox>
+  </div>
 </div>

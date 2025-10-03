@@ -4,34 +4,43 @@ import { CommonModule } from '@angular/common';
 import { CardComponent } from '../card/card';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
-import { TaskService } from '../../services/task';
+import { Task, TaskService } from '../../services/task';
+import { FormComponent } from '../form/form';
+import { DialogModule } from 'primeng/dialog';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, FormsModule, CardComponent, InputTextModule, ButtonModule],
+  imports: [CommonModule, FormsModule, CardComponent, InputTextModule, ButtonModule, FormComponent, DialogModule],
   templateUrl: './home.html',
   styleUrl: './home.css'
 })
-export class HomeComponent implements OnInit {
-  newTitle = '';
-  newDescription = '';
+export class HomeComponent {
+  modalVisible = false;
+  selectedTask: Task | null = null;
 
-  constructor(public taskService: TaskService) {}
+  constructor(public taskService: TaskService) { }
 
-  ngOnInit(): void {
-    this.taskService.getTasks(); 
+  ngOnInit() {
+    this.taskService.getTasks();
   }
 
-  addTask() {
-    if (this.newTitle.trim()) {
-      this.taskService.addTask({
-        title: this.newTitle,
-        description: this.newDescription,
-        completed: false
-      });
-      this.newTitle = '';
-      this.newDescription = '';
+  openNewTask() {
+    this.selectedTask = null;
+    this.modalVisible = true;
+  }
+
+  openEditTask(task: Task) {
+    this.selectedTask = task;
+    this.modalVisible = true;
+  }
+
+  saveTask(task: Task) {
+    if (task.id) {
+      this.taskService.updateTask(task.id, task);
+    } else {
+      this.taskService.addTask(task);
     }
+    this.modalVisible = false;
   }
 }
