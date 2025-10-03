@@ -1,0 +1,9 @@
+<div class="p-4 rounded-xl shadow-md border bg-white flex flex-col gap-2">
+  <h3 class="font-bold text-lg text-black">{{ title }}</h3>
+  <p class="text-gray-600">{{ description }}</p>
+  <span
+    class="px-3 py-1 rounded-full text-xs font-semibold"
+    [ngClass]="completed ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'">
+    {{ completed ? 'Completed' : 'Pending' }}
+  </span>
+</div>
